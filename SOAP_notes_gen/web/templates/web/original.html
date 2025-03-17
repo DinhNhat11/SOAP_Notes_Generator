@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAP Notes Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        h1, h2 { color: #333; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; }
+        button { padding: 10px; margin-right: 10px; cursor: pointer; }
+        #conversation, #soapNotes { border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; }
+        .editable { border: 1px solid #ccc; padding: 5px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>SOAP Notes Generator</h1>
+    
+    <h2>Conversation</h2>
+    <div id="conversation"></div>
+    <button id="startRecording">Start Recording</button>
+    <button id="stopRecording" disabled>Stop Recording</button>
+    <button id="editConversation">Edit Conversation</button>
+    
+    <h2>Objective Statistics</h2>
+    <textarea id="objectiveStats" placeholder="Enter additional objective data here..."></textarea>
+    
+    <h2>Generate SOAP Notes</h2>
+    <button id="generateSOAP">Generate SOAP Notes</button>
+    
+    <div id="soapNotes">
+        <h3>Subjective</h3>
+        <div id="subjective" class="editable" contenteditable="true"></div>
+        
+        <h3>Objective</h3>
+        <div id="objective" class="editable" contenteditable="true"></div>
+        
+        <h3>Assessment</h3>
+        <div id="assessment" class="editable" contenteditable="true"></div>
+        
+        <h3>Plan</h3>
+        <div id="plan" class="editable" contenteditable="true"></div>
+    </div>
+    
+    <button id="saveSOAP">Save SOAP Note</button>
+
+    <script>
+        let isRecording = false;
+        let conversation = '';
+
+        document.getElementById('startRecording').addEventListener('click', startRecording);
+        document.getElementById('stopRecording').addEventListener('click', stopRecording);
+        document.getElementById('editConversation').addEventListener('click', editConversation);
+        document.getElementById('generateSOAP').addEventListener('click', generateSOAP);
+        document.getElementById('saveSOAP').addEventListener('click', saveSOAP);
+
+        function startRecording() {
+            isRecording = true;
+            document.getElementById('startRecording').disabled = true;
+            document.getElementById('stopRecording').disabled = false;
+            // Implement actual recording logic here
+            simulateRecording();
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            document.getElementById('startRecording').disabled = false;
+            document.getElementById('stopRecording').disabled = true;
+            // Stop actual recording here
+        }
+
+        function simulateRecording() {
+            if (isRecording) {
+                conversation += 'Sample conversation text. ';
+                document.getElementById('conversation').textContent = conversation;
+                setTimeout(simulateRecording, 1000);
+            }
+        }
+
+        function editConversation() {
+            let editedConversation = prompt("Edit the conversation:", conversation);
+            if (editedConversation !== null) {
+                conversation = editedConversation;
+                document.getElementById('conversation').textContent = conversation;
+            }
+        }
+
+        function generateSOAP() {
+            let objectiveStats = document.getElementById('objectiveStats').value;
+            axios.post('/generate_soap/', {
+                conversation: conversation,
+                objective_stats: objectiveStats
+            })
+            .then(function (response) {
+                document.getElementById('subjective').textContent = response.data.subjective;
+                document.getElementById('objective').textContent = response.data.objective;
+                document.getElementById('assessment').textContent = response.data.assessment;
+                document.getElementById('plan').textContent = response.data.plan;
+            })
+            .catch(function (error) {
+                console.error('Error generating SOAP notes:', error);
+            });
+        }
+
+        function saveSOAP() {
+            let soapData = {
+                subjective: document.getElementById('subjective').textContent,
+                objective: document.getElementById('objective').textContent,
+                assessment: document.getElementById('assessment').textContent,
+                plan: document.getElementById('plan').textContent
+            };
+            axios.post('/save_soap/', soapData)
+            .then(function (response) {
+                alert('SOAP note saved successfully!');
+            })
+            .catch(function (error) {
+                console.error('Error saving SOAP note:', error);
+            });
+        }
+    </script>
+</body>
+</html>
