@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAP Notes - Objective Section</title>
+    <link rel="stylesheet" href="obj.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        .section {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .vital-signs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        input[type="text"], 
+        input[type="number"], 
+        textarea, 
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .sub-section {
+            margin-top: 10px;
+            padding-left: 15px;
+            border-left: 3px solid #e0e0e0;
+        }
+        .collapsible {
+            background-color: #f1f1f1;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collapsible:after {
+            content: '\02795'; /* Unicode character for "plus" sign */
+            font-size: 13px;
+            color: #777;
+        }
+        .active:after {
+            content: "\2796"; /* Unicode character for "minus" sign */
+        }
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f9f9f9;
+        }
+        .active {
+            background-color: #e6e6e6;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Objective Assessment</h1>
+    <div id="objective-form">
+        <!-- Vital Signs Section -->
+        <button type="button" class="collapsible active">1. Vital Signs</button>
+        <div class="content" style="max-height: 1000px;">
+            <div class="section">
+                <div class="vital-signs">
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°F)</label>
+                        <input type="number" id="temperature" name="temperature" step="0.1" placeholder="98.6">
+                    </div>
+                    <div class="form-group">
+                        <label for="blood-pressure">Blood Pressure (mmHg)</label>
+                        <input type="text" id="blood-pressure" name="blood-pressure" placeholder="120/80">
+                    </div>
+                    <div class="form-group">
+                        <label for="heart-rate">Heart Rate (bpm)</label>
+                        <input type="number" id="heart-rate" name="heart-rate" placeholder="72">
+                    </div>
+                    <div class="form-group">
+                        <label for="respiratory-rate">Respiratory Rate (breaths/min)</label>
+                        <input type="number" id="respiratory-rate" name="respiratory-rate" placeholder="16">
+                    </div>
+                    <div class="form-group">
+                        <label for="oxygen-saturation">Oxygen Saturation (%)</label>
+                        <input type="number" id="oxygen-saturation" name="oxygen-saturation" placeholder="98">
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Height (cm)</label>
+                        <input type="number" id="height" name="height" placeholder="170">
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" id="weight" name="weight" placeholder="70">
+                    </div>
+                    <div class="form-group">
+                        <label for="bmi">BMI (auto-calculated)</label>
+                        <input type="text" id="bmi" name="bmi" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Physical Examination Section -->
+        <button type="button" class="collapsible">2. Physical Examination Findings</button>
+        <div class="content">
+            <div class="section">
+                <!-- General Appearance -->
+                <div class="form-group">
+                    <label for="general-appearance">General Appearance</label>
+                    <select id="general-appearance" name="general-appearance">
+                        <option value="">Select or type</option>
+                        <option value="alert and oriented">Alert and oriented</option>
+                        <option value="distressed">Distressed</option>
+                        <option value="lethargic">Lethargic</option>
+                        <option value="anxious">Anxious</option>
+                        <option value="comfortable">Comfortable</option>
+                    </select>
+                </div>
+
+                <!-- HEENT -->
+                <div class="sub-section">
+                    <h3>HEENT (Head, Eyes, Ears, Nose, Throat)</h3>
+                    <div class="form-group">
+                        <label for="pupils">Pupils</label>
+                        <select id="pupils" name="pupils">
+                            <option value="">Select or type</option>
+                            <option value="PERRLA">PERRLA (Pupils Equal, Round, Reactive to Light and Accommodation)</option>
+                            <option value="unequal">Unequal</option>
+                            <option value="sluggish">Sluggish reaction</option>
+                            <option value="fixed">Fixed/Non-reactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="oropharynx">Oropharynx</label>
+                        <select id="oropharynx" name="oropharynx">
+                            <option value="">Select or type</option>
+                            <option value="normal">Normal</option>
+                            <option value="erythematous">Erythematous</option>
+                            <option value="tonsillar swelling">Tonsillar swelling</option>
+                            <option value="exudates">Exudates present</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ear-exam">Ear Canals and Tympanic Membranes</label>
+                        <select id="ear-exam" name="ear-exam">
+                            <option value="">Select or type</option>
+                            <option value="normal">Normal</option>
+                            <option value="fluid">Fluid present</option>
+                            <option value="erythema">Erythema</option>
+                            <option value="otitis media">Signs of otitis media</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="heent-additional">Additional HEENT Findings</label>
+                        <textarea id="heent-additional" name="heent-additional" placeholder="Enter any additional HEENT findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Cardiovascular -->
+                <div class="sub-section">
+                    <h3>Cardiovascular</h3>
+                    <div class="form-group">
+                        <label for="heart-sounds">Heart Sounds</label>
+                        <select id="heart-sounds" name="heart-sounds">
+                            <option value="">Select or type</option>
+                            <option value="normal">Normal S1/S2</option>
+                            <option value="murmur">Murmur present</option>
+                            <option value="irregular">Irregular rhythm</option>
+                            <option value="gallop">S3/S4 gallop</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="peripheral-pulses">Peripheral Pulses</label>
+                        <select id="peripheral-pulses" name="peripheral-pulses">
+                            <option value="">Select or type</option>
+                            <option value="present">Present and equal</option>
+                            <option value="weak">Weak</option>
+                            <option value="absent">Absent</option>
+                            <option value="unequal">Unequal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edema">Edema</label>
+                        <select id="edema" name="edema">
+                            <option value="">Select or type</option>
+                            <option value="absent">Absent</option>
+                            <option value="pitting">Pitting</option>
+                            <option value="non-pitting">Non-pitting</option>
+                            <option value="bilateral">Bilateral</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardiovascular-additional">Additional Cardiovascular Findings</label>
+                        <textarea id="cardiovascular-additional" name="cardiovascular-additional" placeholder="Enter any additional cardiovascular findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Respiratory -->
+                <div class="sub-section">
+                    <h3>Respiratory</h3>
+                    <div class="form-group">
+                        <label for="lung-sounds">Lung Sounds</label>
+                        <select id="lung-sounds" name="lung-sounds">
+                            <option value="">Select or type</option>
+                            <option value="clear">Clear bilaterally</option>
+                            <option value="wheezing">Wheezing</option>
+                            <option value="crackles">Crackles</option>
+                            <option value="diminished">Diminished breath sounds</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="chest-expansion">Chest Expansion</label>
+                        <select id="chest-expansion" name="chest-expansion">
+                            <option value="">Select or type</option>
+                            <option value="symmetric">Symmetric</option>
+                            <option value="asymmetric">Asymmetric</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="respiratory-distress">Signs of Respiratory Distress</label>
+                        <select id="respiratory-distress" name="respiratory-distress">
+                            <option value="">Select or type</option>
+                            <option value="none">None</option>
+                            <option value="accessory muscles">Use of accessory muscles</option>
+                            <option value="nasal flaring">Nasal flaring</option>
+                            <option value="retractions">Retractions</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="respiratory-additional">Additional Respiratory Findings</label>
+                        <textarea id="respiratory-additional" name="respiratory-additional" placeholder="Enter any additional respiratory findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Gastrointestinal -->
+                <div class="sub-section">
+                    <h3>Gastrointestinal</h3>
+                    <div class="form-group">
+                        <label for="abdominal-tenderness">Abdominal Tenderness</label>
+                        <select id="abdominal-tenderness" name="abdominal-tenderness">
+                            <option value="">Select or type</option>
+                            <option value="absent">Absent</option>
+                            <option value="present">Present</option>
+                            <option value="localized">Localized</option>
+                            <option value="generalized">Generalized</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bowel-sounds">Bowel Sounds</label>
+                        <select id="bowel-sounds" name="bowel-sounds">
+                            <option value="">Select or type</option>
+                            <option value="normal">Normal</option>
+                            <option value="hyperactive">Hyperactive</option>
+                            <option value="hypoactive">Hypoactive</option>
+                            <option value="absent">Absent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="masses-organomegaly">Palpable Masses or Organomegaly</label>
+                        <select id="masses-organomegaly" name="masses-organomegaly">
+                            <option value="">Select or type</option>
+                            <option value="absent">Absent</option>
+                            <option value="present">Present</option>
+                            <option value="hepatomegaly">Hepatomegaly</option>
+                            <option value="splenomegaly">Splenomegaly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gastrointestinal-additional">Additional Gastrointestinal Findings</label>
+                        <textarea id="gastrointestinal-additional" name="gastrointestinal-additional" placeholder="Enter any additional gastrointestinal findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Neurological -->
+                <div class="sub-section">
+                    <h3>Neurological</h3>
+                    <div class="form-group">
+                        <label for="consciousness">Level of Consciousness</label>
+                        <select id="consciousness" name="consciousness">
+                            <option value="">Select or type</option>
+                            <option value="alert">Alert</option>
+                            <option value="confused">Confused</option>
+                            <option value="drowsy">Drowsy</option>
+                            <option value="lethargic">Lethargic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cranial-nerves">Cranial Nerve Function</label>
+<select id="cranial-nerves" name="cranial-nerves">
+                            <option value="">Select or type</option>
+                            <option value="intact">Intact</option>
+                            <option value="deficit">Deficit present</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="motor-strength">Motor Strength</label>
+                        <select id="motor-strength" name="motor-strength">
+                            <option value="">Select or type</option>
+                            <option value="normal">Normal (5/5)</option>
+                            <option value="mild weakness">Mild weakness (4/5)</option>
+                            <option value="moderate weakness">Moderate weakness (3/5)</option>
+                            <option value="severe weakness">Severe weakness (2/5)</option>
+                            <option value="trace">Trace movement (1/5)</option>
+                            <option value="paralysis">Paralysis (0/5)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reflexes">Reflexes</label>
+                        <select id="reflexes" name="reflexes">
+                            <option value="">Select or type</option>
+                            <option value="normal">Normal</option>
+                            <option value="hyperreflexia">Hyperreflexia</option>
+                            <option value="hyporeflexia">Hyporeflexia</option>
+                            <option value="absent">Absent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gait-coordination">Gait and Coordination</label>
+                        <select id="gait-coordination" name="gait-coordination">
+                            <option value="">Select or type</option>
+                            <option value="normal">Normal</option>
+                            <option value="unsteady">Unsteady</option>
+                            <option value="ataxic">Ataxic</option>
+                            <option value="requires assistance">Requires assistance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="neurological-additional">Additional Neurological Findings</label>
+                        <textarea id="neurological-additional" name="neurological-additional" placeholder="Enter any additional neurological findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Musculoskeletal -->
+                <div class="sub-section">
+                    <h3>Musculoskeletal</h3>
+                    <div class="form-group">
+                        <label for="joint-rom">Joint Range of Motion</label>
+                        <select id="joint-rom" name="joint-rom">
+                            <option value="">Select or type</option>
+                            <option value="full">Full</option>
+                            <option value="restricted">Restricted</option>
+                            <option value="painful">Painful</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="swelling-deformities">Swelling or Deformities</label>
+                        <select id="swelling-deformities" name="swelling-deformities">
+                            <option value="">Select or type</option>
+                            <option value="absent">Absent</option>
+                            <option value="present">Present</option>
+                            <option value="minimal">Minimal</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="severe">Severe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenderness">Tenderness to Palpation</label>
+                        <select id="tenderness" name="tenderness">
+                            <option value="">Select or type</option>
+                            <option value="absent">Absent</option>
+                            <option value="present">Present</option>
+                            <option value="mild">Mild</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="severe">Severe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="musculoskeletal-additional">Additional Musculoskeletal Findings</label>
+                        <textarea id="musculoskeletal-additional" name="musculoskeletal-additional" placeholder="Enter any additional musculoskeletal findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Skin -->
+                <div class="sub-section">
+                    <h3>Skin</h3>
+                    <div class="form-group">
+                        <label for="skin-lesions">Rashes, Lesions, Bruising, Wounds</label>
+                        <select id="skin-lesions" name="skin-lesions">
+                            <option value="">Select or type</option>
+                            <option value="absent">Absent</option>
+                            <option value="rash present">Rash present</option>
+                            <option value="lesions">Lesions</option>
+                            <option value="bruising">Bruising</option>
+                            <option value="wounds">Wounds</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="skin-status">Temperature and Hydration Status</label>
+                        <select id="skin-status" name="skin-status">
+                            <option value="">Select or type</option>
+                            <option value="warm and dry">Warm and dry</option>
+                            <option value="cool">Cool</option>
+                            <option value="diaphoretic">Diaphoretic</option>
+                            <option value="clammy">Clammy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="skin-additional">Additional Skin Findings</label>
+                        <textarea id="skin-additional" name="skin-additional" placeholder="Enter any additional skin findings"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnostic Test Results Section -->
+        <button type="button" class="collapsible">3. Diagnostic Test Results</button>
+        <div class="content">
+            <div class="section">
+                <!-- Laboratory Tests -->
+                <div class="sub-section">
+                    <h3>Laboratory Tests</h3>
+                    <div class="form-group">
+                        <label for="cbc">Complete Blood Count (CBC)</label>
+                        <textarea id="cbc" name="cbc" placeholder="Enter CBC results if available"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="glucose">Glucose</label>
+                        <input type="text" id="glucose" name="glucose" placeholder="Enter glucose value if available">
+                    </div>
+                    <div class="form-group">
+                        <label for="lipid-panel">Lipid Panel</label>
+                        <textarea id="lipid-panel" name="lipid-panel" placeholder="Enter lipid panel results if available"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="liver-function">Liver Function Tests</label>
+                        <textarea id="liver-function" name="liver-function" placeholder="Enter liver function test results if available"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="kidney-function">Kidney Function Tests</label>
+                        <textarea id="kidney-function" name="kidney-function" placeholder="Enter kidney function test results if available"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="lab-additional">Additional Laboratory Tests</label>
+                        <textarea id="lab-additional" name="lab-additional" placeholder="Enter any additional laboratory test results"></textarea>
+                    </div>
+                </div>
+
+                <!-- Imaging Studies -->
+                <div class="sub-section">
+                    <h3>Imaging Studies</h3>
+                    <div class="form-group">
+                        <label for="xray">X-ray</label>
+                        <textarea id="xray" name="xray" placeholder="Enter X-ray results if available"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="ct-scan">CT Scan</label>
+                        <textarea id="ct-scan" name="ct-scan" placeholder="Enter CT scan results if available"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="ultrasound">Ultrasound</label>
+                        <textarea id="ultrasound" name="ultrasound" placeholder="Enter ultrasound results if available"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="imaging-additional">Additional Imaging Studies</label>
+                        <textarea id="imaging-additional" name="imaging-additional" placeholder="Enter any additional imaging study results"></textarea>
+                    </div>
+                </div>
+
+                <!-- ECG/EKG Readings -->
+                <div class="sub-section">
+                    <h3>ECG/EKG Readings</h3>
+                    <div class="form-group">
+                        <label for="ekg">ECG/EKG Interpretation</label>
+                        <select id="ekg" name="ekg">
+                            <option value="">Select or type</option>
+                            <option value="normal sinus rhythm">Normal sinus rhythm</option>
+                            <option value="sinus tachycardia">Sinus tachycardia</option>
+                            <option value="sinus bradycardia">Sinus bradycardia</option>
+                            <option value="atrial fibrillation">Atrial fibrillation</option>
+                            <option value="pvcs">PVCs</option>
+                            <option value="st elevation">ST elevation</option>
+                            <option value="st depression">ST depression</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ekg-additional">Additional ECG/EKG Findings</label>
+                        <textarea id="ekg-additional" name="ekg-additional" placeholder="Enter any additional ECG/EKG findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Urinalysis -->
+                <div class="sub-section">
+                    <h3>Urinalysis</h3>
+                    <div class="form-group">
+                        <label for="urinalysis">Urinalysis Results</label>
+                        <select id="urinalysis" name="urinalysis" multiple>
+                            <option value="normal">Normal</option>
+                            <option value="bacteria">Bacteria present</option>
+                            <option value="wbc">WBCs present</option>
+                            <option value="rbc">RBCs present</option>
+                            <option value="protein">Protein present</option>
+                            <option value="glucose">Glucose present</option>
+                            <option value="ketones">Ketones present</option>
+                            <option value="nitrites">Nitrites positive</option>
+                            <option value="leukocyte esterase">Leukocyte esterase positive</option>
+                        </select>
+                        <small>Hold Ctrl/Cmd to select multiple options</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="urinalysis-additional">Additional Urinalysis Findings</label>
+                        <textarea id="urinalysis-additional" name="urinalysis-additional" placeholder="Enter any additional urinalysis findings"></textarea>
+                    </div>
+                </div>
+
+                <!-- Point-of-care Tests -->
+                <div class="sub-section">
+                    <h3>Point-of-care Tests</h3>
+                    <div class="form-group">
+                        <label for="rapid-strep">Rapid Strep Test</label>
+                        <select id="rapid-strep" name="rapid-strep">
+                            <option value="">Select or type</option>
+                            <option value="positive">Positive</option>
+                            <option value="negative">Negative</option>
+                            <option value="not performed">Not performed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="influenza">Influenza Test</label>
+                        <select id="influenza" name="influenza">
+                            <option value="">Select or type</option>
+                            <option value="positive A">Positive for Influenza A</option>
+                            <option value="positive B">Positive for Influenza B</option>
+                            <option value="negative">Negative</option>
+                            <option value="not performed">Not performed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="glucose-fingerstick">Glucose Finger Stick</label>
+                        <input type="text" id="glucose-fingerstick" name="glucose-fingerstick" placeholder="Enter finger stick glucose value if available">
+                    </div>
+                    <div class="form-group">
+                        <label for="poc-additional">Additional Point-of-care Test Results</label>
+                        <textarea id="poc-additional" name="poc-additional" placeholder="Enter any additional point-of-care test results"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Procedures Section -->
+        <button type="button" class="collapsible">4. Procedures, Medications, and Treatments</button>
+        <div class="content">
+            <div class="section">
+                <!-- Medications Administered -->
+                <div class="sub-section">
+                    <h3>Medications Administered During Visit</h3>
+                    <div class="form-group">
+                        <label for="medications-administered">Medications</label>
+                        <textarea id="medications-administered" name="medications-administered" placeholder="Enter medications administered during the visit (e.g., vaccines, antibiotics, pain relief)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Procedures Performed -->
+                <div class="sub-section">
+                    <h3>Procedures Performed</h3>
+                    <div class="form-group">
+                        <label for="procedures-performed">Procedures</label>
+                        <textarea id="procedures-performed" name="procedures-performed" placeholder="Enter procedures performed during the visit (e.g., wound dressing, ear lavage, abscess drainage, suturing)"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Observations Section -->
+        <button type="button" class="collapsible">5. Observations by the Physician</button>
+        <div class="content">
+            <div class="section">
+                <!-- Patient Behavior and Mental Status -->
+                <div class="form-group">
+                    <label for="patient-behavior">Patient Behavior and Mental Status</label>
+                    <select id="patient-behavior" name="patient-behavior">
+                        <option value="">Select or type</option>
+                        <option value="cooperative">Cooperative</option>
+                        <option value="agitated">Agitated</option>
+                        <option value="anxious">Anxious</option>
+                        <option value="withdrawn">Withdrawn</option>
+                        <option value="combative">Combative</option>
+                    </select>
+                </div>
+
+                <!-- Speech Clarity and Coherence -->
+                <div class="form-group">
+                    <label for="speech">Speech Clarity and Coherence</label>
+                    <select id="speech" name="speech">
+                        <option value="">Select or type</option>
+                        <option value="normal">Normal</option>
+                        <option value="slurred">Slurred</option>
+                        <option value="incoherent">Incohe

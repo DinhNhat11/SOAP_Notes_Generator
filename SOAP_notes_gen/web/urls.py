@@ -6,4 +6,5 @@ urlpatterns = [
     path('save_conversation/', views.save_conversation, name='save_conversation'),
     path('generate_soap/', views.generate_soap, name='generate_soap'),
     path('save_soap/', views.save_soap, name='save_soap'),
+    
 ]

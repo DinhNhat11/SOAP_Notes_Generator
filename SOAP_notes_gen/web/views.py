@@ -22,15 +22,16 @@ def generate_soap(request):
         data = json.loads(request.body)
         conversation = data.get('conversation')
         print(conversation)
-        #objective_stats = data.get('objective_stats')
-        #objective += f"\n\nAdditional Objective Data:\n{objective_stats}"
-
+        objective_stats = data.get('objective_stats')
         
         subjective = generate_subjective.invoke({"conversation": conversation})
         objective = generate_objective.invoke({
                             "conversation": conversation,
                             "subjective": subjective
                             })
+        
+        objective.content += f"\n\nAdditional Objective Data:\n{objective_stats}"
+
         assessment = generate_assessment.invoke({
                             "conversation": conversation,
                             "subjective": subjective,
@@ -61,3 +62,5 @@ def save_soap(request):
             plan=data.get('plan')
         )
         return JsonResponse({'status': 'success', 'id': soap_note.id})
+
+
