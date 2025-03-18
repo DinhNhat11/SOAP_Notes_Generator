@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAP Notes Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        h1, h2 { color: #333; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; }
+        button { padding: 10px; margin-right: 10px; cursor: pointer; }
+        #conversation, #soapNotes { border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; }
+        .editable { border: 1px solid #ccc; padding: 5px; margin-bottom: 10px; }
+
+        fieldset {
+            border: 2px solidrgb(7, 53, 101);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        legend {
+            font-weight: bold;
+            color:rgb(13, 76, 143);
+            font-size: 1.2em;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .toggle-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            color:rgb(120, 179, 241);
+        }
+    </style>
+</head>
+
+<style>
+
+</style>
+<form id="objectiveForm">
+    <h2>Objective Data Entry</h2>
+    
+    <!-- Vital Signs -->
+    <button type="button" class="toggle-button" onclick="toggleSection()">&#9660;</button>
+    <fieldset id="vital-signs-section">
+        <legend>Vital Signs</legend>
+        <label for="temperature">Temperature (°C):</label>
+        <input type="text" id="temperature" name="Temperature" placeholder="Enter temperature">
+        
+        <label for="bp">Blood Pressure (mmHg):</label>
+        <input type="text" id="bp" name="Blood Pressure" placeholder="e.g., 120/80">
+        
+        <label for="heart-rate">Heart Rate (bpm):</label>
+        <input type="text" id="heart-rate" name="Heart Rate" placeholder="Enter heart rate">
+        
+        <label for="respiratory-rate">Respiratory Rate (breaths/min):</label>
+        <input type="text" id="respiratory-rate" name="Respiratory Rate" placeholder="Enter respiratory rate">
+        
+        <label for="oxygen">Oxygen Saturation (SpO₂ %):</label>
+        <input type="text" id="oxygen" name="Oxygen Saturation" placeholder="Enter SpO₂ level">
+        
+        <label for="height">Height (cm):</label>
+        <input type="text" id="height" name="Height" placeholder="Enter height in cm">
+        
+        <label for="weight">Weight (kg):</label>
+        <input type="text" id="weight" name="Weight" placeholder="Enter weight in kg">
+    </fieldset>
+
+    <!-- Physical Examination Findings -->
+    <button type="button" class="toggle-button" onclick="toggleSection('physical-examination-section')">&#9660;</button>
+    <fieldset id="physical-examination-section">
+        <legend>Physical Examination Findings</legend>
+        <textarea name="Physical Examination Findings" placeholder="Describe findings (e.g., HEENT, cardiovascular, respiratory, etc.)"></textarea>
+    </fieldset>
+
+    <!-- Diagnostic Test Results -->
+    <button type="button" class="toggle-button" onclick="toggleSection('diagnostic-test-section')">&#9660;</button>
+    <fieldset id="diagnostic-test-section">
+        <legend>Diagnostic Test Results</legend>
+        <textarea name="Diagnostic Test Results" placeholder="Include lab, imaging, ECG, etc."></textarea>
+    </fieldset>
+
+    <!-- Procedures, Medications, and Treatments Administered -->
+    <button type="button" class="toggle-button" onclick="toggleSection('procedures-treatpments-section')">&#9660;</button>
+    <fieldset id="procedures-treatments-section">
+        <legend>Procedures, Medications, and Treatments</legend>
+        <textarea name="Procedures and Treatments" placeholder="Detail any treatments or rocedures performed."></textarea>
+    </fieldset>
+
+    <!-- Observations by the Physician -->
+    <button type="button" class="toggle-button" onclick="toggleSection('physician-observations-section')">&#9660;</button>
+    <fieldset id="physician-observations-section">
+        <legend>Physician Observations</legend>
+        <textarea name="Physician Observations" placeholder="Describe patient behavior, speech, mobility, and distress."></textarea>
+    </fieldset>
+
+    <!-- Additional Notes -->
+    <button type="button" class="toggle-button" onclick="toggleSection('additional-notes-section')">&#9660;</button>
+    <fieldset id="additional-notes-section">
+        <legend>Additional Notes</legend>
+        <textarea id="additionalNotes" placeholder="Any extra observations or notes"></textarea>
+    </fieldset>
+
+</form>
+
+<script>
+    document.getElementById("generateSOAP").addEventListener("click", function() {
+        let formData = new FormData(document.getElementById("objectiveForm"));
+        let dataString = "";
+        
+        formData.forEach((value, key) => {
+            if (value.trim()) {
+                dataString += key + ": " + value + "\n";
+            }
+        });
+        
+        fetch("/your-backend-endpoint/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ objective_stats: dataString.trim() })
+        });
+    });
+</script>
+
+<script>
+    function toggleSection() {
+        var section = document.getElementById("vital-signs-section");
+        var button = document.querySelector(".toggle-button");
+        
+        // Toggle visibility
+        if (section.style.display === "none") {
+            section.style.display = "block";
+            button.innerHTML = "&#9660;"; // Down arrow when the section is shown
+        } else {
+            section.style.display = "none";
+            button.innerHTML = "&#9650;"; // Up arrow when the section is hidden
+        }
+    }
+</script>
+</body>
+</html>
